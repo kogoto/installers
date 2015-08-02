@@ -10,13 +10,15 @@ releasever=$1
 pushd $srcdir
 
 if [ ! -e nginx-${releasever} ]; then
-
-  mkdir nginx-${releasever}
-
   if [ ! -e nginx-${releasever}.tar.gz ]; then
     wget http://nginx.org/download/nginx-${releasever}.tar.gz
+
+    if [ ! -e nginx-${releasever}.tar.gz ]; then
+      exit 1
+    fi
   fi
 
+  mkdir nginx-${releasever}
   tar zxvf nginx-${releasever}.tar.gz -C nginx-${releasever} --strip-components 1
 fi
 
@@ -64,7 +66,7 @@ cd nginx-${releasever}
 
 make && make install
 
-rm -rf nginx-${releasever}.tar.gz
+rm -rf $srcdir/nginx-${releasever}.tar.gz
 
 popd
 

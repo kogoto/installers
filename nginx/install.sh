@@ -11,11 +11,13 @@ pushd $srcdir
 
 if [ ! -e nginx-${releasever} ]; then
 
+  mkdir nginx-${releasever}
+
   if [ ! -e nginx-${releasever}.tar.gz ]; then
     wget http://nginx.org/download/nginx-${releasever}.tar.gz
   fi
 
-  tar zxvf nginx-${releasever}.tar.gz
+  tar zxvf nginx-${releasever}.tar.gz -C nginx-${releasever} --strip-components 1
 fi
 
 [ ! -e /var/cache/nginx ] && mkdir -p /var/cache/nginx
@@ -65,6 +67,8 @@ make && make install
 rm -rf nginx-${releasever}.tar.gz
 
 popd
+
+adduser --system --no-create-home --user-group -s /sbin/nologin nginx
 
 cp $basedir/nginx.service /usr/lib/systemd/system
 systemctl enable nginx.service

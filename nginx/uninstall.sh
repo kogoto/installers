@@ -10,3 +10,5 @@ for dir in ${INSTALL_DIRS[@]}
 do
   [ -e $dir ] && rm -rf $dir
 done
+
+userdel nginx
